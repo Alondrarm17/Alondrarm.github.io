@@ -1,0 +1,123 @@
+/* --- global reset / helpers --- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+/* You can tweak these two numbers */
+:root{
+  --menu-width: 15%;      /* hint suggests percent */
+  --header-height: 120px; /* space reserved for fixed header */
+}
+
+/* --- LEFT JUMP MENU (fixed, full height) --- */
+#jumpMenu{
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: var(--menu-width);
+  height: 100vh;              /* spans entire height */
+  overflow-y: auto;           /* scroll if too many links */
+  padding: 20px 14px;
+}
+
+/* make the jump links stack nicely */
+#jumpMenu a{
+  display: block;
+  margin: 14px 0;
+}
+
+/* --- MAIN AREA is pushed right so it doesn't go under jump menu --- */
+main{
+  margin-left: var(--menu-width);
+  padding-top: var(--header-height); /* so content starts below fixed header */
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+/* --- FIXED HEADER (doesn't move with scroll) --- */
+main > header{
+  position: fixed;
+  top: 0;
+  left: var(--menu-width);               /* starts AFTER the jump menu */
+  width: calc(100% - var(--menu-width)); /* header width excludes menu */
+  height: var(--header-height);
+  display: flex;
+  flex-direction: column;
+  align-items: center;  /* centers MyBlog.com and the buttons within header area */
+  justify-content: center;
+  gap: 12px;
+  padding: 14px 10px;
+  z-index: 1000;
+}
+
+/* "MyBlog.com" line */
+main > header p{
+  margin: 0;
+  font-size: 32px;
+  font-weight: 700;
+}
+
+/* header nav with buttons */
+main > header nav{
+  display: flex;
+  gap: 18px;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap; /* helps on smaller screens */
+}
+
+main > header nav button{
+  padding: 14px 24px;
+  border: 0;
+  cursor: pointer;
+}
+
+/* --- page title --- */
+main > h1{
+  text-align: center;
+  margin: 30px 0 20px;
+}
+
+/* --- ARTICLES LAYOUT (wraps on resize) --- */
+#container{
+  display: flex;
+  flex-wrap: wrap;        /* key requirement: reorganize on resize */
+  gap: 28px;
+  justify-content: center;
+  align-items: flex-start;
+  margin-bottom: 60px;
+}
+
+/* each article fixed width */
+#container article{
+  width: 300px;           /* hint: fixed width like 300px */
+  padding: 14px;
+}
+
+/* optional spacing inside articles */
+#container article h2{
+  margin-top: 0;
+}
+
+/* --- THANK YOU (always bottom-right) --- */
+#thanks{
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  margin: 0;
+  padding: 18px 22px;
+  z-index: 1100;
+}
+
+/* --- Footer (just keep it below content) --- */
+footer{
+  margin-top: 40px;
+  padding: 20px 0 40px;
+}
