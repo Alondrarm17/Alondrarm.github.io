@@ -8,12 +8,13 @@ html, body {
   padding: 0;
   font-family: Georgia, "Times New Roman", serif;
   background: #f6f6f6;
+  overflow-x: hidden;
 }
 
 /* ===== Easy controls ===== */
 :root{
-  --menu-width: 10%;
-  --header-height: 120px;
+  --menu-width: 15%;
+  --header-height: 105px;
 
   --menu-bg: #c79b2a;      /* warm gold */
   --header-bg: #e53935;    /* red */
@@ -45,7 +46,7 @@ html, body {
 
 #jumpMenu h2{
   margin: 0 0 18px;
-  font-size: 34px;
+  font-size: 24px;
   line-height: 1.05;
   text-align: center;
 }
@@ -53,10 +54,11 @@ html, body {
 #jumpMenu a{
   display: block;
   margin: 18px 0;
-  font-size: 24px;
+  font-size: 16px;
   color: #0b2bd6;
-  font-weight: 700;
+  font-weight: 300;
   text-decoration: underline;
+  text-align: center;
 }
 
 /* =========================
@@ -65,8 +67,9 @@ html, body {
 main{
   margin-left: var(--menu-width);
   padding-top: var(--header-height);
-  padding-left: 30px;
-  padding-right: 30px;
+  padding-left: 40px;
+  padding-right: 40px;
+  width: calc(100% - var(--menu-width));
 }
 
 /* =========================
@@ -84,8 +87,8 @@ main > header{
   /* background layers like screenshot */
   background: linear-gradient(
     to bottom,
-    var(--header-bg) 0 58%,
-    var(--nav-bg) 58% 100%
+    var(--header-bg) 0 54%,
+    var(--nav-bg) 58% 10%
   );
 
   display: flex;
@@ -99,25 +102,25 @@ main > header{
 main > header p{
   margin: 0;
   color: #000;
-  font-size: 34px;
+  font-size: 32px;
   font-weight: 700;
 }
 
 /* nav buttons row */
 main > header nav{
   display: flex;
-  gap: 26px;
+  gap: 40px;
   flex-wrap: wrap;
   justify-content: center;
-  align-items: center;
+  align-items: bottom;
 }
 
 /* buttons styled */
 main > header nav button{
   background: var(--btn-bg);
   color: var(--btn-text);
-  border: 3px solid rgba(255,255,255,0.2);
-  padding: 14px 30px;
+  border: 1px solid rgba(255,255,255,0.2);
+  padding: 8px 30px;
   font-size: 22px;
   cursor: pointer;
   min-width: 230px;  /* helps match the “bar” look */
@@ -142,28 +145,34 @@ main > h1{
   display: grid;
   gap: var(--gap);
   justify-content: center; /* keeps it neat/centered */
+  align-content: start;
+  margin: 0 auto;
+
 
   /* Default: 4 columns when there’s room */
-  grid-template-columns: repeat(4, var(--card-width));
+  grid-template-columns: repeat(auto-fit, var(--card-width));
 }
 
 /* Each article "card" */
 #container article{
   width: var(--card-width);  /* fixed width requirement */
-  background: #ffffff;
-  padding: 16px 16px 14px;
-  border: 1px solid rgba(0,0,0,0.12);
+  
+  padding: 0;
+  border: none;
+  min-width: 0;
 }
 
 #container article h2{
   margin: 0 0 10px;
-  font-size: 30px;
+  font-size: 22px;
+  font-weight: 700;
 }
 
 #container article p{
   margin: 0 0 10px;
   line-height: 1.35;
-  color: #333;
+  text-align: justify;
+  hyphens: auto;
 }
 
 /* Reflow rules for smaller screens (this is the “reorganize” requirement) */
@@ -177,20 +186,30 @@ main > h1{
   #container{ grid-template-columns: repeat(1, var(--card-width)); }
 }
 
+@media (max-width: 700px){
+  :root{
+    --menu-width: 200px;
+  }
+
+  #jumpMenu a{ font-size: 18px; }
+  #jumpMenu h2{ font-size: 26px; }
+}
 /* =========================
    THANK YOU block (bottom-right fixed)
    ========================= */
 #thanks{
   position: fixed;
-  right: 18px;
-  bottom: 18px;
-  z-index: 1200;
+  right: clamp(0px, 0vw, 18px);
+  bottom: clamp(0px, 0vw, 18px);
 
+  padding: clamp(10px, 1.5vw, 18px) clamp(12px, 2vw, 20px);
+
+  font-size: clamp(18px, 2.8vw, 40px); /* never tiny, never gigantic */
+  line-height: 1.1;
+
+  max-width: min(70vw, 520px); /* prevents it from taking over screen */
   background: var(--thank-bg);
   border: 2px solid var(--thank-border);
-  padding: 18px 22px;
-  font-size: 40px;
-  font-weight: 700;
   color: #0a0a0a;
 }
 
