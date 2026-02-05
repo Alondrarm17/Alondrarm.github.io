@@ -1,123 +1,200 @@
-/* --- global reset / helpers --- */
+/* ===== Reset ===== */
 *,
 *::before,
-*::after {
-  box-sizing: border-box;
-}
+*::after { box-sizing: border-box; }
 
 html, body {
   margin: 0;
   padding: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  background: #f6f6f6;
 }
 
-/* You can tweak these two numbers */
+/* ===== Easy controls ===== */
 :root{
-  --menu-width: 15%;      /* hint suggests percent */
-  --header-height: 120px; /* space reserved for fixed header */
+  --menu-width: 16%;
+  --header-height: 120px;
+
+  --menu-bg: #c79b2a;      /* warm gold */
+  --header-bg: #e53935;    /* red */
+  --nav-bg: #111;          /* near-black */
+  --btn-bg: #1e40ff;       /* vivid blue */
+  --btn-text: #fff;
+
+  --thank-bg: #9fd3f6;     /* light blue */
+  --thank-border: #2b2b2b;
+
+  --card-width: 300px;     /* fixed width per requirement */
+  --gap: 28px;
 }
 
-/* --- LEFT JUMP MENU (fixed, full height) --- */
+/* =========================
+   LEFT JUMP MENU (full height)
+   ========================= */
 #jumpMenu{
   position: fixed;
-  left: 0;
   top: 0;
+  left: 0;
   width: var(--menu-width);
-  height: 100vh;              /* spans entire height */
-  overflow-y: auto;           /* scroll if too many links */
-  padding: 20px 14px;
+  height: 100vh;                 /* covers whole page height */
+  background: var(--menu-bg);
+  padding: 22px 16px;
+  overflow-y: auto;
+  border-right: 6px solid rgba(0,0,0,0.15);
 }
 
-/* make the jump links stack nicely */
+#jumpMenu h2{
+  margin: 0 0 18px;
+  font-size: 34px;
+  line-height: 1.05;
+  text-align: center;
+}
+
 #jumpMenu a{
   display: block;
-  margin: 14px 0;
+  margin: 18px 0;
+  font-size: 24px;
+  color: #0b2bd6;
+  font-weight: 700;
+  text-decoration: underline;
 }
 
-/* --- MAIN AREA is pushed right so it doesn't go under jump menu --- */
+/* =========================
+   MAIN area pushed right
+   ========================= */
 main{
   margin-left: var(--menu-width);
-  padding-top: var(--header-height); /* so content starts below fixed header */
+  padding-top: var(--header-height);
   padding-left: 30px;
   padding-right: 30px;
 }
 
-/* --- FIXED HEADER (doesn't move with scroll) --- */
+/* =========================
+   FIXED HEADER (always visible)
+   centered ignoring jump menu
+   ========================= */
 main > header{
   position: fixed;
   top: 0;
-  left: var(--menu-width);               /* starts AFTER the jump menu */
-  width: calc(100% - var(--menu-width)); /* header width excludes menu */
+  left: var(--menu-width);
+  width: calc(100% - var(--menu-width));
   height: var(--header-height);
+  z-index: 1000;
+
+  /* background layers like screenshot */
+  background: linear-gradient(
+    to bottom,
+    var(--header-bg) 0 58%,
+    var(--nav-bg) 58% 100%
+  );
+
   display: flex;
   flex-direction: column;
-  align-items: center;  /* centers MyBlog.com and the buttons within header area */
+  align-items: center;
   justify-content: center;
   gap: 12px;
-  padding: 14px 10px;
-  z-index: 1000;
 }
 
-/* "MyBlog.com" line */
+/* “MyBlog.com” line */
 main > header p{
   margin: 0;
-  font-size: 32px;
+  color: #000;
+  font-size: 34px;
   font-weight: 700;
 }
 
-/* header nav with buttons */
+/* nav buttons row */
 main > header nav{
   display: flex;
-  gap: 18px;
+  gap: 26px;
+  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  flex-wrap: wrap; /* helps on smaller screens */
 }
 
+/* buttons styled */
 main > header nav button{
-  padding: 14px 24px;
-  border: 0;
+  background: var(--btn-bg);
+  color: var(--btn-text);
+  border: 3px solid rgba(255,255,255,0.2);
+  padding: 14px 30px;
+  font-size: 22px;
   cursor: pointer;
+  min-width: 230px;  /* helps match the “bar” look */
 }
 
-/* --- page title --- */
+/* page title */
 main > h1{
   text-align: center;
-  margin: 30px 0 20px;
+  margin: 28px 0 18px;
+  font-size: 58px;
+  font-weight: 800;
+  color: #111;
 }
 
-/* --- ARTICLES LAYOUT (wraps on resize) --- */
+/* =========================
+   ARTICLES LAYOUT
+   - shows 4 across on desktop
+   - reorganizes on resize
+   ========================= */
 #container{
-  display: flex;
-  flex-wrap: wrap;        /* key requirement: reorganize on resize */
-  gap: 28px;
-  justify-content: center;
-  align-items: flex-start;
-  margin-bottom: 60px;
+  /* Use grid so you reliably get 4 across at “normal” width */
+  display: grid;
+  gap: var(--gap);
+  justify-content: center; /* keeps it neat/centered */
+
+  /* Default: 4 columns when there’s room */
+  grid-template-columns: repeat(4, var(--card-width));
 }
 
-/* each article fixed width */
+/* Each article "card" */
 #container article{
-  width: 300px;           /* hint: fixed width like 300px */
-  padding: 14px;
+  width: var(--card-width);  /* fixed width requirement */
+  background: #ffffff;
+  padding: 16px 16px 14px;
+  border: 1px solid rgba(0,0,0,0.12);
 }
 
-/* optional spacing inside articles */
 #container article h2{
-  margin-top: 0;
+  margin: 0 0 10px;
+  font-size: 30px;
 }
 
-/* --- THANK YOU (always bottom-right) --- */
+#container article p{
+  margin: 0 0 10px;
+  line-height: 1.35;
+  color: #333;
+}
+
+/* Reflow rules for smaller screens (this is the “reorganize” requirement) */
+@media (max-width: 1400px){
+  #container{ grid-template-columns: repeat(3, var(--card-width)); }
+}
+@media (max-width: 1100px){
+  #container{ grid-template-columns: repeat(2, var(--card-width)); }
+}
+@media (max-width: 760px){
+  #container{ grid-template-columns: repeat(1, var(--card-width)); }
+}
+
+/* =========================
+   THANK YOU block (bottom-right fixed)
+   ========================= */
 #thanks{
   position: fixed;
   right: 18px;
   bottom: 18px;
-  margin: 0;
+  z-index: 1200;
+
+  background: var(--thank-bg);
+  border: 2px solid var(--thank-border);
   padding: 18px 22px;
-  z-index: 1100;
+  font-size: 40px;
+  font-weight: 700;
+  color: #0a0a0a;
 }
 
-/* --- Footer (just keep it below content) --- */
+/* Footer (optional spacing) */
 footer{
-  margin-top: 40px;
-  padding: 20px 0 40px;
+  padding: 40px 0 60px;
 }
