@@ -12,7 +12,7 @@ html, body {
 
 /* ===== Easy controls ===== */
 :root{
-  --menu-width: 16%;
+  --menu-width: 10%;
   --header-height: 120px;
 
   --menu-bg: #c79b2a;      /* warm gold */
